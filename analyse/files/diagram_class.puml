@@ -1,0 +1,375 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+'=============================
+' Classe mère
+'=============================
+
+abstract class Utilisateur{
+    -id : int
+    -nom : String
+    -prenom : String
+    -email : String
+    -motDePasse : String
+
+    +seConnecter()
+    +seDeconnecter()
+    +modifierProfil()
+    +changerMotDePasse()
+    +envoyerMessage()
+    +recevoirNotification()
+}
+
+'=============================
+' Utilisateurs
+'=============================
+
+class Administrateur{
+
+    +creerUtilisateur()
+    +modifierUtilisateur()
+    +supprimerUtilisateur()
+
+    +gererCours()
+    +gererClasses()
+    +gererHoraires()
+    +gererInscriptions()
+
+    +publierCalendrier()
+
+    +gererBulletins()
+
+    +gererPresences()
+
+    +gererFraisScolaires()
+
+    +envoyerCommunicationParents()
+
+}
+
+class Professeur{
+
+    -matricule : String
+    -specialite : String
+
+    +ajouterCours()
+    +modifierCours()
+
+    +publierTravail()
+
+    +corrigerTravail()
+
+    +encoderBulletin()
+
+    +encoderPresence()
+
+    +gererClasse()
+
+    +envoyerMessage()
+
+}
+
+class Parent{
+
+    -telephone : String
+    -adresse : String
+
+    +creerCompte()
+
+    +inscrireEleve()
+
+    +consulterHoraire()
+
+    +consulterCours()
+
+    +consulterBulletins()
+
+    +consulterPresence()
+
+    +justifierAbsence()
+
+    +prendreRendezVous()
+
+    +demanderAttestation()
+
+}
+
+class Eleve{
+
+    -matricule : String
+    -dateNaissance : Date
+
+    +consulterCours()
+
+    +consulterHoraire()
+
+    +consulterTravaux()
+
+    +remettreTravail()
+
+    +consulterBulletins()
+
+    +prendreRendezVous()
+
+}
+
+Utilisateur <|-- Administrateur
+Utilisateur <|-- Professeur
+Utilisateur <|-- Parent
+Utilisateur <|-- Eleve
+
+'=============================
+' Classe
+'=============================
+
+class Classe{
+
+    -id : int
+    -nom : String
+    -niveau : String
+    -option : String
+
+    +ajouterEleve()
+
+    +retirerEleve()
+
+    +ajouterProfesseur()
+
+    +supprimerProfesseur()
+
+}
+
+'=============================
+' Cours
+'=============================
+
+class Cours{
+
+    -id : int
+    -nom : String
+    -description : String
+
+    +creer()
+
+    +modifier()
+
+    +supprimer()
+
+}
+
+'=============================
+' Horaire
+'=============================
+
+class Horaire{
+
+    -jour : String
+    -heureDebut : Time
+    -heureFin : Time
+
+    +ajouterCours()
+
+    +modifierHoraire()
+
+}
+
+'=============================
+' Travail
+'=============================
+
+class Travail{
+
+    -id : int
+    -titre : String
+    -dateLimite : Date
+
+    +publier()
+
+    +modifier()
+
+    +supprimer()
+
+}
+
+class RemiseTravail{
+
+    -dateRemise : Date
+    -note : float
+
+    +deposer()
+
+    +modifierDepot()
+
+}
+
+'=============================
+' Bulletin
+'=============================
+
+class Bulletin{
+
+    -id : int
+    -periode : String
+    -moyenne : double
+
+    +calculerMoyenne()
+
+    +publier()
+
+    +modifier()
+
+}
+
+'=============================
+' Présence
+'=============================
+
+class Presence{
+
+    -date : Date
+    -statut : String
+
+    +marquerPresent()
+
+    +marquerAbsent()
+
+}
+
+class Justification{
+
+    -motif : String
+
+    +valider()
+
+    +refuser()
+
+}
+
+'=============================
+' Notification
+'=============================
+
+class Notification{
+
+    -titre : String
+    -message : String
+
+    +envoyer()
+
+    +supprimer()
+
+}
+
+'=============================
+' Message
+'=============================
+
+class Message{
+
+    -contenu : String
+    -date : DateTime
+
+    +envoyer()
+
+    +supprimer()
+
+}
+
+'=============================
+' Rendez-vous
+'=============================
+
+class RendezVous{
+
+    -date : DateTime
+    -objet : String
+
+    +planifier()
+
+    +annuler()
+
+    +modifier()
+
+}
+
+'=============================
+' Frais scolaires
+'=============================
+
+class FraisScolaire{
+
+    -libelle : String
+    -montant : Decimal
+
+    +ajouter()
+
+    +modifier()
+
+    +supprimer()
+
+}
+
+class Paiement{
+
+    -montant : Decimal
+    -datePaiement : Date
+
+    +effectuerPaiement()
+
+    +genererRecu()
+
+}
+
+'=============================
+' Attestation
+'=============================
+
+class Attestation{
+
+    -type : String
+
+    +generer()
+
+    +telecharger()
+
+}
+
+'=============================
+' Relations
+'=============================
+
+Parent "1" -- "0..*" Eleve
+
+Classe "1" -- "0..*" Eleve
+
+Classe "1" -- "1..*" Professeur
+
+Professeur "1" -- "0..*" Cours
+
+Cours "1" -- "1..*" Travail
+
+Eleve "1" -- "0..*" RemiseTravail
+
+Travail "1" -- "0..*" RemiseTravail
+
+Eleve "1" -- "0..*" Bulletin
+
+Eleve "1" -- "0..*" Presence
+
+Presence "1" -- "0..1" Justification
+
+Utilisateur "1" -- "0..*" Notification
+
+Utilisateur "1" -- "0..*" Message
+
+Eleve "1" -- "0..*" Paiement
+
+FraisScolaire "1" -- "0..*" Paiement
+
+Parent "1" -- "0..*" RendezVous
+
+Professeur "1" -- "0..*" RendezVous
+
+Eleve "1" -- "0..*" Attestation
+
+@enduml

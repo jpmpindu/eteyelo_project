@@ -1,0 +1,117 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor "École\n(Administration)" as Admin
+actor "Professeur" as Prof
+actor "Élève" as Eleve
+actor "Parent" as Parent
+
+rectangle "Système de gestion scolaire" {
+
+  package "Administration" {
+    usecase "Gérer les utilisateurs" as UC1
+    usecase "Gérer les horaires" as UC2
+    usecase "Gérer les cours" as UC3
+    usecase "Gérer les classes" as UC4
+    usecase "Gérer les inscriptions" as UC5
+    usecase "Communiquer avec les parents" as UC6
+    usecase "Gérer les présences/\nabsences" as UC7
+    usecase "Gérer les bulletins" as UC8
+    usecase "Publier le calendrier\nscolaire" as UC9
+    usecase "Gérer les frais\nscolaires" as UC10
+  }
+
+  package "Professeur" {
+    usecase "Gérer ses cours" as UC11
+    usecase "Encoder les bulletins" as UC12
+    usecase "Gérer sa classe" as UC13
+    usecase "Gérer les élèves" as UC14
+    usecase "Communiquer avec\nparents / élèves" as UC15
+  }
+
+  package "Élève" {
+    usecase "Consulter les cours" as UC16
+    usecase "Remettre un travail" as UC17
+    usecase "Écrire au professeur /\nservice d'aide" as UC18
+    usecase "Consulter les bulletins" as UC19
+    usecase "Prendre rendez-vous\navec titulaire/direction" as UC20
+    usecase "Consulter l'emploi\ndu temps" as UC21
+    usecase "Consulter les travaux" as UC22
+    usecase "Recevoir les\ncommunications" as UC23
+  }
+
+  package "Parent" {
+    usecase "Créer un compte" as UC24
+    usecase "Inscrire un élève" as UC25
+    usecase "Consulter l'horaire" as UC26
+    usecase "Consulter les cours" as UC27
+    usecase "Consulter les bulletins" as UC28
+    usecase "Consulter les\nprésences/absences" as UC29
+    usecase "Justifier une absence\nou un retard" as UC30
+    usecase "Recevoir des\nnotifications" as UC31
+    usecase "Prendre rendez-vous\navec titulaire/direction" as UC32
+    usecase "Écrire au professeur /\nservice d'aide" as UC33
+    usecase "Demander une\nattestation ou un relevé" as UC34
+  }
+}
+
+'=====================
+' Associations
+'=====================
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+Admin --> UC8
+Admin --> UC9
+Admin --> UC10
+
+Prof --> UC11
+Prof --> UC12
+Prof --> UC13
+Prof --> UC14
+Prof --> UC15
+
+Eleve --> UC16
+Eleve --> UC17
+Eleve --> UC18
+Eleve --> UC19
+Eleve --> UC20
+Eleve --> UC21
+Eleve --> UC22
+Eleve --> UC23
+
+Parent --> UC24
+Parent --> UC25
+Parent --> UC26
+Parent --> UC27
+Parent --> UC28
+Parent --> UC29
+Parent --> UC30
+Parent --> UC31
+Parent --> UC32
+Parent --> UC33
+Parent --> UC34
+
+'=====================
+' Relations entre cas d'utilisation
+'=====================
+
+UC25 ..> UC24 : <<include>>
+UC30 ..> UC29 : <<extend>>
+UC31 ..> UC6 : <<include>>
+UC23 ..> UC6 : <<include>>
+UC12 ..> UC8 : <<include>>
+UC11 ..> UC3 : <<include>>
+UC21 ..> UC2 : <<include>>
+UC26 ..> UC2 : <<include>>
+UC19 ..> UC8 : <<include>>
+UC28 ..> UC8 : <<include>>
+
+@enduml
